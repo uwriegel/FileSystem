@@ -5,9 +5,9 @@
 enum class Drive_type
 {
 	UNKNOWN,
-	REMOVABLE,
 	HARDDRIVE,
-	ROM
+	ROM,
+	REMOVABLE
 };
 
 struct Drive_info

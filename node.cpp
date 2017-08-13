@@ -11,9 +11,15 @@ void method_get_drives(const FunctionCallbackInfo<Value>& args) {
 	auto drives = get_drives();
 	for (auto it = drives.begin(); it < drives.end(); it++)
 	{
+		Local<Object> obj = Object::New(isolate);
+		obj->Set(String::NewFromUtf8(isolate, "name"), String::NewFromTwoByte(isolate,
+			reinterpret_cast<const uint16_t*>(it->name.c_str())));
+		obj->Set(String::NewFromUtf8(isolate, "description"), String::NewFromTwoByte(isolate,
+			reinterpret_cast<const uint16_t*>(it->description.c_str())));
+		obj->Set(String::NewFromUtf8(isolate, "type"), Number::New(isolate, static_cast<int>(it->type)));
+
 		const unsigned argc = 1;
-		Local<Value> argv[argc] = { String::NewFromTwoByte(isolate,
-			reinterpret_cast<const uint16_t*>(it->description.c_str())) };
+		Local<Value> argv[argc] = { obj };
 		callback->Call(isolate->GetCurrentContext()->Global(), argc, argv);
 	}
 }
