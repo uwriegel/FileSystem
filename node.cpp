@@ -8,7 +8,10 @@ void method_get_drives(const FunctionCallbackInfo<Value>& args) {
 	auto scope(isolate);
 	auto callback = Local<Function>::Cast(args[0]);
 
+	auto driveArray = Array::New(isolate);
+
 	auto drives = get_drives();
+	int index{ 0 };
 	for (auto it = drives.begin(); it < drives.end(); it++)
 	{
 		Local<Object> obj = Object::New(isolate);
@@ -18,10 +21,9 @@ void method_get_drives(const FunctionCallbackInfo<Value>& args) {
 			reinterpret_cast<const uint16_t*>(it->description.c_str())));
 		obj->Set(String::NewFromUtf8(isolate, "type"), Number::New(isolate, static_cast<int>(it->type)));
 
-		const unsigned argc = 1;
-		Local<Value> argv[argc] = { obj };
-		callback->Call(isolate->GetCurrentContext()->Global(), argc, argv);
+		driveArray->Set(index++, obj);
 	}
+	args.GetReturnValue().Set(driveArray);
 }
 
 void Init(Handle<Object> exports) {
