@@ -22,4 +22,4 @@ struct Drive_info
 
 extern const std::vector<Drive_info> get_drives();
 
-extern void Teste();
+

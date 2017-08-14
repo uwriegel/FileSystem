@@ -4,23 +4,6 @@
 #include "tools.h"
 using namespace std;
 
-
-
-void Teste()
-{
-
-
-
-
-
-	Sleep(6000);
-
-
-
-
-}
-
-
 const wstring get_drive_description(const wstring& name);
 Drive_type get_drive_type(unsigned int type);
 bool is_mounted(const file_handle& volume);
