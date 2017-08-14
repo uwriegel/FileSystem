@@ -52,6 +52,8 @@ Drive_type get_drive_type(unsigned int type)
 			return Drive_type::REMOVABLE;
 		case 3:
 			return Drive_type::HARDDRIVE;
+		case 4:
+			return Drive_type::NETWORK;
 		case 5:
 			return Drive_type::ROM;
 		default:

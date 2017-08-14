@@ -7,7 +7,8 @@ enum class Drive_type
 	UNKNOWN,
 	HARDDRIVE,
 	ROM,
-	REMOVABLE
+	REMOVABLE,
+	NETWORK
 };
 
 struct Drive_info
