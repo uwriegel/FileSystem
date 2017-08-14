@@ -1,6 +1,7 @@
 #include <nan.h>
 #include <atomic>
 #include "filesystem.h"
+#include "Access.h"
 using namespace v8;
 using namespace Nan;
 using namespace std;
@@ -60,6 +61,7 @@ void method_get_drives(const Nan::FunctionCallbackInfo<Value>& args) {
 void Init(Local<Object> exports) 
 {
 	exports->Set(New("getDrives").ToLocalChecked(), New<FunctionTemplate>(method_get_drives)->GetFunction());
+	Access::Init(exports);
 }
 
 NODE_MODULE(filesystem, Init)
