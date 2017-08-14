@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <sstream>
 #include "tools.h"
 using namespace std;
@@ -11,4 +12,10 @@ const vector<wstring> split(const wstring &s, wchar_t delim)
 		elems.push_back(move(item));
 
 	return elems;
+}
+
+file_handle::~file_handle() 
+{ 
+	if (handle != INVALID_HANDLE_VALUE)
+		CloseHandle(handle); 
 }

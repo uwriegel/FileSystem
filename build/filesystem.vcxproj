@@ -61,7 +61,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;..\..\..\..\..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj /d2FastFail /Zc:sizedDealloc- /Zc:threadSafeInit- %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -96,13 +96,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;..\..\..\..\..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=filesystem;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;BUILDING_NODE_EXTENSION;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;..\..\..\..\..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj /d2FastFail /Zc:sizedDealloc- /Zc:threadSafeInit- %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -137,13 +137,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;..\..\..\..\..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=filesystem;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;BUILDING_NODE_EXTENSION;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;..\..\..\..\..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj /d2FastFail /Zc:sizedDealloc- /Zc:threadSafeInit- /MP %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <CompileAsWinRT>false</CompileAsWinRT>
@@ -188,13 +188,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;..\..\..\..\..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=filesystem;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;BUILDING_NODE_EXTENSION;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;..\..\..\..\..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj /d2FastFail /Zc:sizedDealloc- /Zc:threadSafeInit- /MP %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <CompileAsWinRT>false</CompileAsWinRT>
@@ -239,7 +239,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\urieg\.nw-gyp\0.24.2\include\node;C:\Users\urieg\.nw-gyp\0.24.2\src;C:\Users\urieg\.nw-gyp\0.24.2\deps\uv\include;C:\Users\urieg\.nw-gyp\0.24.2\deps\v8\include;..\..\..\..\..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=filesystem;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;BUILDING_NODE_EXTENSION;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
@@ -249,7 +249,7 @@
   <ItemGroup>
     <ClCompile Include="..\filesystem.cpp"/>
     <ClCompile Include="..\tools.cpp"/>
-    <ClCompile Include="..\node.cpp"/>
+    <ClCompile Include="..\nannode.cpp"/>
     <ClCompile Include="C:\Users\urieg\AppData\Roaming\npm\node_modules\nw-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>

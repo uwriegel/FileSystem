@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2AA4F33A-4250-42C4-9792-DDB5139B5A4A}"
 	ProjectSection(SolutionItems) = preProject
 		binding.gyp = binding.gyp
+		nannode.cpp = nannode.cpp
 		node.cpp = node.cpp
 	EndProjectSection
 EndProject

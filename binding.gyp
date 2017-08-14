@@ -5,7 +5,10 @@
 			"sources": [ 
 				"filesystem.cpp",
 				"tools.cpp",
-				"node.cpp"
+				"nannode.cpp"
+			],
+			"include_dirs": [
+				"<!(node -e \"require('nan')\")"
 			]
 		}
 	]

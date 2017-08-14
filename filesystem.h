@@ -15,6 +15,7 @@ struct Drive_info
 {
 	std::wstring name;
 	std::wstring description;
+	uint64_t size;
 	Drive_type type;
 	bool isMounted;
 };
