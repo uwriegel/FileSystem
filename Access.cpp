@@ -1,5 +1,8 @@
 #include "Access.h"
 #include "worker.h"
+using namespace std;
+using namespace Nan;
+using namespace v8;
 
 Nan::Persistent<Function> Access::constructor;
 
@@ -33,14 +36,14 @@ Local<Object> Access::NewInstance()
 
 	//const unsigned argc = 1;
 	//Local<Value> argv[argc] = { arg };
-	Local<Function> cons = Nan::New<v8::Function>(constructor);
+	Local<Function> cons = Nan::New<Function>(constructor);
 	//Local<Object> instance = cons->NewInstance(argc, argv); // depri
 	auto maybeInstance = Nan::NewInstance(cons, 0, nullptr);
 	auto instance = maybeInstance.ToLocalChecked();
 	return scope.Escape(instance);
 }
 
-void Access::New(const Nan::FunctionCallbackInfo<v8::Value>& info) 
+void Access::New(const Nan::FunctionCallbackInfo<Value>& info) 
 {
 	auto obj = new Access();
 	obj->Wrap(info.This());

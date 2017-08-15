@@ -8,6 +8,7 @@ const wstring get_drive_description(const wstring& name);
 Drive_type get_drive_type(unsigned int type);
 bool is_mounted(const file_handle& volume);
 uint64_t get_volume_size(const wstring& directory_on_drive);
+File_data get_data(const WIN32_FIND_DATAW& find_data);
 
 const vector<Drive_info> get_drives()
 {
@@ -84,4 +85,43 @@ bool is_mounted(const file_handle& volume)
 	DWORD bytes_returned; // ignored
 	auto result = DeviceIoControl(volume, FSCTL_IS_VOLUME_MOUNTED, nullptr, 0, nullptr, 0, &bytes_returned, nullptr);
 	return result != 0;
+}
+
+template <typename O>
+void list_files(const wstring& directory, O iter) 
+{
+	WIN32_FIND_DATAW find_data{ 0 };
+	auto search_path = wstring { directory + L"\\*.*" };
+	auto handle = FindFirstFileW(search_path.c_str(), &find_data);
+	auto aua = GetLastError();
+	if (handle == INVALID_HANDLE_VALUE)
+		return;
+
+	*iter++ = move(get_data(find_data));
+
+	while (true)
+	{
+		if (!FindNextFileW(handle, &find_data))
+		{
+			FindClose(handle);
+			break;
+		}
+		*iter++ = move(get_data(find_data));
+	}
+}
+
+const vector<File_data> list_directory(const wstring& directory)
+{
+	vector<File_data> result;
+	list_files(directory, back_inserter(result));
+
+	sort(result.begin(), result.end(), [](const auto& lvalue, const auto& rvalue) {
+		return lvalue.is_directory > rvalue.is_directory;
+	});
+	return move(result);
+}
+
+File_data get_data(const WIN32_FIND_DATAW& find_data)
+{
+	return File_data{ find_data.cFileName, (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY };
 }

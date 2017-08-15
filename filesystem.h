@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+using namespace std;
 
 enum class Drive_type
 {
@@ -13,13 +14,18 @@ enum class Drive_type
 
 struct Drive_info
 {
-	std::wstring name;
-	std::wstring description;
+	wstring name;
+	wstring description;
 	uint64_t size;
 	Drive_type type;
 	bool isMounted;
 };
 
-extern const std::vector<Drive_info> get_drives();
+struct File_data
+{
+	wstring name;
+	bool is_directory;
+};
 
-
+extern const vector<Drive_info> get_drives();
+extern const vector<File_data> list_directory(const wstring& directory);
