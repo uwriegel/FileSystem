@@ -58,10 +58,44 @@ void Access::New(const Nan::FunctionCallbackInfo<Value>& info)
 
 void Access::method_get_drives(const Nan::FunctionCallbackInfo<Value>& args)
 {
-	auto id = atomic_fetch_add(&lastId, 1);
 	auto callback = new Callback(args[0].As<Function>());
-	AsyncQueueWorker(new Worker(callback, id));
+	MessageBox(0, "1", "", MB_OK);
+	vector<Drive_info> drives;
+	AsyncQueueWorker(new Worker(callback, [&drives]()-> void
+	{
+		MessageBox(0, "2", "", MB_OK);
+
+		vector<Drive_info> drives1;
+		drives1 = move(get_drives());
+		MessageBox(0, "2.5", "", MB_OK);
+	}, [&drives](Nan::Callback* callback)-> void
+	{
+		auto driveArray = Nan::New<Array>();
+		MessageBox(0, "3", "", MB_OK);
+		int index{ 0 };
+		for (auto it = drives.begin(); it < drives.end(); it++)
+		{
+			Local<Object> obj = Nan::New<Object>();
+			obj->Set(Nan::New("name").ToLocalChecked(),
+				Nan::New(reinterpret_cast<const uint16_t*>(it->name.c_str()), static_cast<int>(it->name.length())).ToLocalChecked());
+			obj->Set(Nan::New("description").ToLocalChecked(),
+				Nan::New(reinterpret_cast<const uint16_t*>(it->description.c_str()), static_cast<int>(it->description.length())).ToLocalChecked());
+			obj->Set(Nan::New("type").ToLocalChecked(), Nan::New<Number>(static_cast<int>(it->type)));
+			obj->Set(Nan::New("size").ToLocalChecked(), Nan::New<Number>(static_cast<double>(it->size)));
+
+			driveArray->Set(index++, obj);
+		}
+
+		const unsigned argc = 1;
+		Local<Value> argv[argc] = { driveArray };
+
+		callback->Call(1, argv);
+
+	}));
 	//args.GetReturnValue().Set(id);
 }
 
-atomic<int> Access::lastId;
+void Access::method_list_files(const Nan::FunctionCallbackInfo<Value>& args)
+{
+
+}
