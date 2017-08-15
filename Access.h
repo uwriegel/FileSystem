@@ -9,9 +9,10 @@ class Access : public ObjectWrap
 {
 public:
 	static void Init(Local<Object> exports);
+	static Local<Object> NewInstance();
 
 private:
-	explicit Access();
+	Access();
 	~Access();
 
 	static void New(const Nan::FunctionCallbackInfo<Value>& info);

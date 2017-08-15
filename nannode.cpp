@@ -58,10 +58,19 @@ void method_get_drives(const Nan::FunctionCallbackInfo<Value>& args) {
 	//args.GetReturnValue().Set(id);
 }
 
+void create_object(const Nan::FunctionCallbackInfo<Value>& info) {
+	//info.GetReturnValue().Set(Access::NewInstance(info[0]));
+	info.GetReturnValue().Set(Access::NewInstance());
+}
+
 void Init(Local<Object> exports) 
 {
-	exports->Set(New("getDrives").ToLocalChecked(), New<FunctionTemplate>(method_get_drives)->GetFunction());
 	Access::Init(exports);
+
+	exports->Set(Nan::New("createAccess").ToLocalChecked(), Nan::New<FunctionTemplate>(create_object)->GetFunction());
+
+	exports->Set(New("getDrives").ToLocalChecked(), New<FunctionTemplate>(method_get_drives)->GetFunction());
+	
 }
 
 NODE_MODULE(filesystem, Init)

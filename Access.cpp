@@ -23,29 +23,27 @@ void Access::Init(Local<Object> exports)
 	SetPrototypeMethod(tpl, "getValue", GetValue);
 
 	constructor.Reset(tpl->GetFunction());
-	exports->Set(Nan::New("Access").ToLocalChecked(), tpl->GetFunction());
+}
+
+//Local<Object> Access::NewInstance(Local<Value> arg)
+Local<Object> Access::NewInstance()
+{
+	Nan::EscapableHandleScope scope;
+
+	//const unsigned argc = 1;
+	//Local<Value> argv[argc] = { arg };
+	Local<Function> cons = Nan::New<v8::Function>(constructor);
+	//Local<Object> instance = cons->NewInstance(argc, argv); // depri
+	auto maybeInstance = Nan::NewInstance(cons, 0, nullptr);
+	auto instance = maybeInstance.ToLocalChecked();
+	return scope.Escape(instance);
 }
 
 void Access::New(const Nan::FunctionCallbackInfo<v8::Value>& info) 
 {
-	if (info.IsConstructCall()) 
-	{
-		// Invoked as constructor: `new MyObject(...)`
-		//double value = info[0]->IsUndefined() ? 0 : info[0]->NumberValue();
-		//auto obj = new Access(value);
-		auto obj = new Access();
-		obj->Wrap(info.This());
-		info.GetReturnValue().Set(info.This());
-	}
-	else 
-	{
-		// Invoked as plain function `MyObject(...)`, turn into construct call.
-		//const int argc = 1;
-		//Local<Value> argv[argc] = { info[0] };
-		Local<Function> cons = Nan::New<Function>(constructor);
-		//info.GetReturnValue().Set(cons->NewInstance(argc, argv));
-		info.GetReturnValue().Set(cons->NewInstance());
-	}
+	auto obj = new Access();
+	obj->Wrap(info.This());
+	info.GetReturnValue().Set(info.This());
 }
 
 void Access::GetValue(const Nan::FunctionCallbackInfo<Value>& info) {

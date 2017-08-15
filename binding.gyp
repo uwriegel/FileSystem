@@ -4,7 +4,8 @@
 			"target_name": "filesystem",
 			"sources": [ 
 				"filesystem.cpp",
-				"tools.cpp",
+        "tools.cpp",
+        "access.cpp",
 				"nannode.cpp"
 			],
 			"include_dirs": [
