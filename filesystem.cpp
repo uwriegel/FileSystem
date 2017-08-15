@@ -12,7 +12,7 @@ uint64_t get_volume_size(const wstring& directory_on_drive);
 const vector<Drive_info> get_drives()
 {
 	array<wchar_t, 500> buffer;
-	auto size = GetLogicalDriveStringsW(buffer.size(), buffer.data());
+	auto size = GetLogicalDriveStringsW(static_cast<DWORD>(buffer.size()), buffer.data());
 	wstring drive_string(buffer.data(), size);
 	auto drives = split(drive_string, 0);
 
@@ -43,7 +43,7 @@ const vector<Drive_info> get_drives()
 const wstring get_drive_description(const wstring& name)
 {
 	array<wchar_t, 400> buffer;
-	if (GetVolumeInformationW(name.c_str(), buffer.data(), buffer.size(), nullptr, nullptr, nullptr, nullptr, 0))
+	if (GetVolumeInformationW(name.c_str(), buffer.data(), static_cast<DWORD>(buffer.size()), nullptr, nullptr, nullptr, nullptr, 0))
 		return wstring(buffer.data(), wcslen(buffer.data()));
 	else
 		return wstring();

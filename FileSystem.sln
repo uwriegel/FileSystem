@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Access.h = Access.h
 		binding.gyp = binding.gyp
 		nannode.cpp = nannode.cpp
+		worker.cpp = worker.cpp
+		worker.h = worker.h
 	EndProjectSection
 EndProject
 Global
