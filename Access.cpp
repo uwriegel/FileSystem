@@ -1,4 +1,5 @@
 #include "Access.h"
+#include "worker.h"
 
 Nan::Persistent<Function> Access::constructor;
 
@@ -20,7 +21,7 @@ void Access::Init(Local<Object> exports)
 	tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
 	// Prototype
-	SetPrototypeMethod(tpl, "getValue", GetValue);
+	SetPrototypeMethod(tpl, "getDrives", method_get_drives);
 
 	constructor.Reset(tpl->GetFunction());
 }
@@ -46,9 +47,18 @@ void Access::New(const Nan::FunctionCallbackInfo<v8::Value>& info)
 	info.GetReturnValue().Set(info.This());
 }
 
-void Access::GetValue(const Nan::FunctionCallbackInfo<Value>& info) {
-	auto obj = ObjectWrap::Unwrap<Access>(info.Holder());
-	info.GetReturnValue().Set(Nan::New(reinterpret_cast<const uint16_t*>(obj->value.c_str()), 
-		static_cast<int>(obj->value.length())).ToLocalChecked());
+//void Access::GetValue(const Nan::FunctionCallbackInfo<Value>& info) {
+//	auto obj = ObjectWrap::Unwrap<Access>(info.Holder());
+//	info.GetReturnValue().Set(Nan::New(reinterpret_cast<const uint16_t*>(obj->value.c_str()), 
+//		static_cast<int>(obj->value.length())).ToLocalChecked());
+//}
+
+void Access::method_get_drives(const Nan::FunctionCallbackInfo<Value>& args)
+{
+	auto id = atomic_fetch_add(&lastId, 1);
+	auto callback = new Callback(args[0].As<Function>());
+	AsyncQueueWorker(new Worker(callback, id));
+	//args.GetReturnValue().Set(id);
 }
 
+atomic<int> Access::lastId;

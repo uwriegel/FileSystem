@@ -1,5 +1,6 @@
 #pragma once
 #include <nan.h>
+#include <atomic>
 #include <string>
 using namespace Nan;
 using namespace v8;
@@ -17,11 +18,11 @@ private:
 
 	static void New(const Nan::FunctionCallbackInfo<Value>& info);
 
-	static void GetValue(const Nan::FunctionCallbackInfo<Value>& info);
-	//static void GetValue(const Nan::FunctionCallbackInfo<v8::Value>& info);
-	//static void PlusOne(const Nan::FunctionCallbackInfo<v8::Value>& info);
-	//static void Multiply(const Nan::FunctionCallbackInfo<v8::Value>& info);
+	static void method_get_drives(const Nan::FunctionCallbackInfo<Value>& args);
+
 	static Nan::Persistent<Function> constructor;
-	wstring value{ L"Das ist aber schön" };
+//	wstring value{ L"Das ist aber schön" };
+
+	static atomic<int> lastId;
 };
 

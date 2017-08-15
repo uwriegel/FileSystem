@@ -260,3 +260,7 @@ paket-files/
 __pycache__/
 *.pyc
 /package-lock.json
+/build/filesystem.vcxproj.filters
+/build/filesystem.vcxproj
+/build/config.gypi
+/build/binding.sln
