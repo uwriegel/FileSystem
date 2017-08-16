@@ -7,10 +7,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileSystem", "FileSystem.vc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2AA4F33A-4250-42C4-9792-DDB5139B5A4A}"
 	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
 		Access.cpp = Access.cpp
 		Access.h = Access.h
 		binding.gyp = binding.gyp
 		nannode.cpp = nannode.cpp
+		nantools.cpp = nantools.cpp
+		nantools.h = nantools.h
 		worker.cpp = worker.cpp
 		worker.h = worker.h
 	EndProjectSection

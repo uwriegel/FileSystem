@@ -22,7 +22,7 @@ file_handle::~file_handle()
 		CloseHandle(handle); 
 }
 
-wstring convertToUtf16(string utf8)
+wstring convert_to_utf16(string utf8)
 {
 	wstring utf16;
 	auto utf8length = static_cast<int>(utf8.length());

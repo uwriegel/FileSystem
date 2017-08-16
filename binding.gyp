@@ -5,6 +5,7 @@
 			"sources": [ 
 				"filesystem.cpp",
 				"tools.cpp",
+				"nantools.cpp",
 				"access.cpp",
 				"worker.cpp",
 				"nannode.cpp"

@@ -1,6 +1,7 @@
 #include "Access.h"
 #include "worker.h"
 #include "tools.h"
+#include "nantools.h"
 using namespace std;
 using namespace Nan;
 using namespace v8;
@@ -90,19 +91,10 @@ void Access::get_drives(const Nan::FunctionCallbackInfo<Value>& args)
 	//args.GetReturnValue().Set(id);
 }
 
-string affe(const Utf8String& utf8)
-{
-	auto length = utf8.length();
-	if (length == 0)
-		return "";
-	
-	return string(*utf8, length);
-}
-
 void Access::list_files(const Nan::FunctionCallbackInfo<Value>& args)
 {
-	auto test = affe(static_cast<Utf8String>(args[0]));
-	MessageBoxW(0, convertToUtf16(test).c_str(), L"16", MB_OK);
+	auto directory = get_string_value(args[0]);
+	MessageBoxW(0, directory.c_str(), L"16", MB_OK);
 	//	string directory(*NANUTF8STRING(args[0].As<String>()));
 	//auto directory = new Callback(args[0].As<Function>());
 	//auto callback = new Callback(args[0].As<Function>());

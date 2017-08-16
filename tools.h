@@ -4,7 +4,7 @@
 using namespace std;
 
 extern const vector<wstring> split(const wstring &s, wchar_t delim);
-extern wstring convertToUtf16(string utf8);
+extern wstring convert_to_utf16(string utf8);
 
 class file_handle
 {
