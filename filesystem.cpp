@@ -8,7 +8,10 @@ const wstring get_drive_description(const wstring& name);
 Drive_type get_drive_type(unsigned int type);
 bool is_mounted(const file_handle& volume);
 uint64_t get_volume_size(const wstring& directory_on_drive);
-File_data get_data(const WIN32_FIND_DATAW& find_data);
+Item get_data(const WIN32_FIND_DATAW& find_data);
+template <typename O>
+void list_files(const wstring& directory, O iter);
+wstring get_directory_parent(const wstring& path);
 
 const vector<Drive_info> get_drives()
 {
@@ -39,6 +42,28 @@ const vector<Drive_info> get_drives()
 	drive_infos.erase(erase_it, drive_infos.end());
 
 	return move(drive_infos);
+}
+
+const vector<Item> list_files(const wstring& directory)
+{
+	auto path = get_full_path_name(directory);
+	if (path[path.length() - 1] == '\\')
+		path.resize(path.length() - 1);
+
+	vector<Item> result;
+	list_files(path, back_inserter(result));
+
+	sort(result.begin(), result.end(), [](const auto& lvalue, const auto& rvalue) {
+		return lvalue.is_directory > rvalue.is_directory;
+	});
+	return move(result);
+}
+
+wstring get_full_path_name(const wstring& path)
+{
+	array<wchar_t, 1000> buffer;
+	auto size = GetFullPathNameW(path.c_str(), static_cast<DWORD>(buffer.size()), buffer.data(), nullptr);
+	return move(wstring(buffer.data(), size));
 }
 
 const wstring get_drive_description(const wstring& name)
@@ -97,6 +122,16 @@ void list_files(const wstring& directory, O iter)
 	if (handle == INVALID_HANDLE_VALUE)
 		return;
 
+	*iter++ = { 
+		L"images/parentfolder.png",
+		L"..",
+		static_cast<uint64_t>(-1L),
+		L"",
+		Item_kind::PARENT,
+		false,
+		true,
+		get_directory_parent(directory)
+	};
 	*iter++ = move(get_data(find_data));
 
 	while (true)
@@ -110,18 +145,27 @@ void list_files(const wstring& directory, O iter)
 	}
 }
 
-const vector<File_data> list_directory(const wstring& directory)
+Item get_data(const WIN32_FIND_DATAW& find_data)
 {
-	vector<File_data> result;
-	list_files(directory, back_inserter(result));
-
-	sort(result.begin(), result.end(), [](const auto& lvalue, const auto& rvalue) {
-		return lvalue.is_directory > rvalue.is_directory;
-	});
-	return move(result);
+	auto is_directory = (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
+	return Item{ 
+		is_directory ? L"images/Folder.png" : L"",
+		find_data.cFileName, 
+		static_cast<uint64_t>(-1L),
+		format_time(find_data.ftLastWriteTime),
+		is_directory ? Item_kind::DIRECTORY : Item_kind::FILE,
+		(find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN,
+		is_directory,
+		L""
+	};
 }
 
-File_data get_data(const WIN32_FIND_DATAW& find_data)
+wstring get_directory_parent(const wstring& path)
 {
-	return File_data{ find_data.cFileName, (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY };
+	auto pos = path.rfind('\\');
+	if (pos == wstring::npos)
+		pos = 0;
+	auto result(path);
+	result.resize(pos);
+	return result;
 }

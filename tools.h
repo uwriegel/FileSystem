@@ -5,6 +5,7 @@ using namespace std;
 
 extern const vector<wstring> split(const wstring &s, wchar_t delim);
 extern wstring convert_to_utf16(string utf8);
+extern wstring format_time(const FILETIME& time);
 
 class file_handle
 {

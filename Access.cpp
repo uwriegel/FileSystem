@@ -94,8 +94,32 @@ void Access::get_drives(const Nan::FunctionCallbackInfo<Value>& args)
 void Access::list_files(const Nan::FunctionCallbackInfo<Value>& args)
 {
 	auto directory = get_string_value(args[0]);
-	MessageBoxW(0, directory.c_str(), L"16", MB_OK);
-	//	string directory(*NANUTF8STRING(args[0].As<String>()));
-	//auto directory = new Callback(args[0].As<Function>());
-	//auto callback = new Callback(args[0].As<Function>());
+	auto callback = new Callback(args[1].As<Function>());
+	
+	auto files = make_shared<vector<Drive_info>>();
+	AsyncQueueWorker(new Worker(callback, [drives]()-> void
+	{
+		*drives = move(::get_drives());
+	}, [drives](Nan::Callback* callback)-> void
+	{
+		auto driveArray = Nan::New<Array>();
+		int index{ 0 };
+		for (auto it = drives->begin(); it < drives->end(); it++)
+		{
+			Local<Object> obj = Nan::New<Object>();
+			obj->Set(Nan::New("name").ToLocalChecked(),
+				Nan::New(reinterpret_cast<const uint16_t*>(it->name.c_str()), static_cast<int>(it->name.length())).ToLocalChecked());
+			obj->Set(Nan::New("description").ToLocalChecked(),
+				Nan::New(reinterpret_cast<const uint16_t*>(it->description.c_str()), static_cast<int>(it->description.length())).ToLocalChecked());
+			obj->Set(Nan::New("type").ToLocalChecked(), Nan::New<Number>(static_cast<int>(it->type)));
+			obj->Set(Nan::New("size").ToLocalChecked(), Nan::New<Number>(static_cast<double>(it->size)));
+
+			driveArray->Set(index++, obj);
+		}
+
+		const unsigned argc = 1;
+		Local<Value> argv[argc] = { driveArray };
+
+		callback->Call(1, argv);
+	}));
 }
