@@ -59,21 +59,16 @@ void Access::New(const Nan::FunctionCallbackInfo<Value>& info)
 void Access::method_get_drives(const Nan::FunctionCallbackInfo<Value>& args)
 {
 	auto callback = new Callback(args[0].As<Function>());
-	MessageBox(0, "1", "", MB_OK);
-	vector<Drive_info> drives;
-	AsyncQueueWorker(new Worker(callback, [&drives]()-> void
+	auto drives = make_shared<vector<Drive_info>>();
+	MessageBox(0, "", "", MB_OK);
+	AsyncQueueWorker(new Worker(callback, [drives]()-> void
 	{
-		MessageBox(0, "2", "", MB_OK);
-
-		vector<Drive_info> drives1;
-		drives1 = move(get_drives());
-		MessageBox(0, "2.5", "", MB_OK);
-	}, [&drives](Nan::Callback* callback)-> void
+		*drives = move(get_drives());
+	}, [drives](Nan::Callback* callback)-> void
 	{
 		auto driveArray = Nan::New<Array>();
-		MessageBox(0, "3", "", MB_OK);
 		int index{ 0 };
-		for (auto it = drives.begin(); it < drives.end(); it++)
+		for (auto it = drives->begin(); it < drives->end(); it++)
 		{
 			Local<Object> obj = Nan::New<Object>();
 			obj->Set(Nan::New("name").ToLocalChecked(),
@@ -90,7 +85,6 @@ void Access::method_get_drives(const Nan::FunctionCallbackInfo<Value>& args)
 		Local<Value> argv[argc] = { driveArray };
 
 		callback->Call(1, argv);
-
 	}));
 	//args.GetReturnValue().Set(id);
 }
