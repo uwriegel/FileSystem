@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
 #include <vector>
+using namespace std;
 
-extern const std::vector<std::wstring> split(const std::wstring &s, wchar_t delim);
+extern const vector<wstring> split(const wstring &s, wchar_t delim);
+extern wstring convertToUtf16(string utf8);
 
 class file_handle
 {

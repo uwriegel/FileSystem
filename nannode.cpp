@@ -6,7 +6,6 @@ using namespace Nan;
 using namespace std;
 
 void create_object(const Nan::FunctionCallbackInfo<Value>& info) {
-	//info.GetReturnValue().Set(Access::NewInstance(info[0]));
 	info.GetReturnValue().Set(Access::NewInstance());
 }
 

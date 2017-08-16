@@ -17,8 +17,8 @@ private:
 
 	static void New(const Nan::FunctionCallbackInfo<Value>& info);
 
-	static void method_get_drives(const Nan::FunctionCallbackInfo<Value>& args);
-	static void method_list_files(const Nan::FunctionCallbackInfo<Value>& args);
+	static void get_drives(const Nan::FunctionCallbackInfo<Value>& args);
+	static void list_files(const Nan::FunctionCallbackInfo<Value>& args);
 
 	static Nan::Persistent<Function> constructor;
 };
