@@ -117,10 +117,10 @@ void Access::list_files(const Nan::FunctionCallbackInfo<Value>& args)
 			obj->Set(Nan::New("name").ToLocalChecked(),
 				Nan::New(reinterpret_cast<const uint16_t*>(it->name.c_str()), static_cast<int>(it->name.length())).ToLocalChecked());
 			if (it->size != -1)
-				obj->Set(Nan::New("size").ToLocalChecked(), Nan::New<Number>(static_cast<double>(it->size)));
+				obj->Set(Nan::New("fileSize").ToLocalChecked(), Nan::New<Number>(static_cast<double>(it->size)));
 			obj->Set(Nan::New("dateTime").ToLocalChecked(),
 				Nan::New(reinterpret_cast<const uint16_t*>(it->date_time.c_str()), static_cast<int>(it->date_time.length())).ToLocalChecked());
-			obj->Set(Nan::New("itemKind").ToLocalChecked(), Nan::New<Number>(static_cast<int>(it->kind)));
+			obj->Set(Nan::New("kind").ToLocalChecked(), Nan::New<Number>(static_cast<int>(it->kind)));
 			obj->Set(Nan::New("isHidden").ToLocalChecked(), Nan::New<Boolean>(it->is_hidden));
 			obj->Set(Nan::New("isDirectory").ToLocalChecked(), Nan::New<Boolean>(it->is_directory));
 			if (it->parent.length() > 0)
