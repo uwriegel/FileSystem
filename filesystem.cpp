@@ -151,7 +151,7 @@ Item get_data(const WIN32_FIND_DATAW& find_data)
 	return Item{ 
 		is_directory ? L"images/Folder.png" : L"",
 		find_data.cFileName, 
-		static_cast<uint64_t>(-1L),
+		static_cast<uint64_t>((find_data.nFileSizeHigh * (MAXDWORD + 1)) + find_data.nFileSizeLow),
 		format_time(find_data.ftLastWriteTime),
 		is_directory ? Item_kind::DIRECTORY : Item_kind::FILE,
 		(find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN,

@@ -61,6 +61,8 @@ void Access::New(const Nan::FunctionCallbackInfo<Value>& info)
 
 void Access::get_drives(const Nan::FunctionCallbackInfo<Value>& args)
 {
+	if (args[0]->IsUndefined())
+		return;
 	auto callback = new Callback(args[0].As<Function>());
 	auto drives = make_shared<vector<Drive_info>>();
 	AsyncQueueWorker(new Worker(callback, [drives]()-> void
@@ -93,33 +95,44 @@ void Access::get_drives(const Nan::FunctionCallbackInfo<Value>& args)
 
 void Access::list_files(const Nan::FunctionCallbackInfo<Value>& args)
 {
+	if (args[1]->IsUndefined())
+		return;
 	auto directory = get_string_value(args[0]);
 	auto callback = new Callback(args[1].As<Function>());
-	
-	auto files = make_shared<vector<Drive_info>>();
-	AsyncQueueWorker(new Worker(callback, [drives]()-> void
+	auto items = make_shared<vector<Item>>();
+	AsyncQueueWorker(new Worker(callback, [directory, items]()-> void
 	{
-		*drives = move(::get_drives());
-	}, [drives](Nan::Callback* callback)-> void
+		*items = move(::list_files(directory));
+	}, [items](Nan::Callback* callback)-> void
 	{
-		auto driveArray = Nan::New<Array>();
+		auto itemArray = Nan::New<Array>();
 		int index{ 0 };
-		for (auto it = drives->begin(); it < drives->end(); it++)
+		for (auto it = items->begin(); it < items->end(); it++)
 		{
 			Local<Object> obj = Nan::New<Object>();
+			
+			
+			obj->Set(Nan::New("imageUrl").ToLocalChecked(),
+				Nan::New(reinterpret_cast<const uint16_t*>(it->image_url.c_str()), static_cast<int>(it->image_url.length())).ToLocalChecked());
 			obj->Set(Nan::New("name").ToLocalChecked(),
 				Nan::New(reinterpret_cast<const uint16_t*>(it->name.c_str()), static_cast<int>(it->name.length())).ToLocalChecked());
-			obj->Set(Nan::New("description").ToLocalChecked(),
-				Nan::New(reinterpret_cast<const uint16_t*>(it->description.c_str()), static_cast<int>(it->description.length())).ToLocalChecked());
-			obj->Set(Nan::New("type").ToLocalChecked(), Nan::New<Number>(static_cast<int>(it->type)));
-			obj->Set(Nan::New("size").ToLocalChecked(), Nan::New<Number>(static_cast<double>(it->size)));
+			if (it->size != -1)
+				obj->Set(Nan::New("size").ToLocalChecked(), Nan::New<Number>(static_cast<double>(it->size)));
+			obj->Set(Nan::New("dateTime").ToLocalChecked(),
+				Nan::New(reinterpret_cast<const uint16_t*>(it->date_time.c_str()), static_cast<int>(it->date_time.length())).ToLocalChecked());
+			obj->Set(Nan::New("itemKind").ToLocalChecked(), Nan::New<Number>(static_cast<int>(it->kind)));
+			obj->Set(Nan::New("isHidden").ToLocalChecked(), Nan::New<Boolean>(it->is_hidden));
+			obj->Set(Nan::New("isDirectory").ToLocalChecked(), Nan::New<Boolean>(it->is_directory));
+			if (it->parent.length() > 0)
+				obj->Set(Nan::New("parent").ToLocalChecked(),
+					Nan::New(reinterpret_cast<const uint16_t*>(it->parent.c_str()), static_cast<int>(it->parent.length())).ToLocalChecked());
 
-			driveArray->Set(index++, obj);
+			itemArray->Set(index++, obj);
 		}
 
 		const unsigned argc = 1;
-		Local<Value> argv[argc] = { driveArray };
-
+		Local<Value> argv[argc] = { itemArray };
+		
 		callback->Call(1, argv);
 	}));
 }

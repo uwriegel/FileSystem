@@ -19,7 +19,9 @@ int main()
 	//auto files = list_files(L"c:\\windows\\system32");
 	auto files = list_files(L"c:\\");
 	for (auto it = files.cbegin(); it < files.cend(); it++)
-		wcout << it->name << L" - " << it->is_directory << L" - " << it->date_time << endl;
+		wcout << it->name << L" - " << it->is_directory << L" - " << it->date_time << L" - " << it->size << endl;
 
+	string line;
+	getline(cin, line);
 	wcout << L"Hällo Welt" << endl;
 }
