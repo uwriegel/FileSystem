@@ -97,21 +97,19 @@ void Access::list_files(const Nan::FunctionCallbackInfo<Value>& args)
 {
 	if (args[1]->IsUndefined())
 		return;
-	auto directory = get_string_value(args[0]);
+	auto directory{ move(get_normalized_path(get_string_value(args[0]))) };
 	auto callback = new Callback(args[1].As<Function>());
 	auto items = make_shared<vector<Item>>();
 	AsyncQueueWorker(new Worker(callback, [directory, items]()-> void
 	{
 		*items = move(::list_files(directory));
-	}, [items](Nan::Callback* callback)-> void
+	}, [directory, items](Nan::Callback* callback)-> void
 	{
 		auto itemArray = Nan::New<Array>();
 		int index{ 0 };
 		for (auto it = items->begin(); it < items->end(); it++)
 		{
 			Local<Object> obj = Nan::New<Object>();
-			
-			
 			obj->Set(Nan::New("imageUrl").ToLocalChecked(),
 				Nan::New(reinterpret_cast<const uint16_t*>(it->image_url.c_str()), static_cast<int>(it->image_url.length())).ToLocalChecked());
 			obj->Set(Nan::New("name").ToLocalChecked(),
@@ -130,8 +128,14 @@ void Access::list_files(const Nan::FunctionCallbackInfo<Value>& args)
 			itemArray->Set(index++, obj);
 		}
 
+		wstring current_directory{ move(directory) };
+		Local<Object> itemsResult = Nan::New<Object>();
+		itemsResult->Set(Nan::New("currentDirectory").ToLocalChecked(), 
+			Nan::New(reinterpret_cast<const uint16_t*>(current_directory.c_str()), static_cast<int>(current_directory.length())).ToLocalChecked());
+		itemsResult->Set(Nan::New("items").ToLocalChecked(), itemArray);
+
 		const unsigned argc = 1;
-		Local<Value> argv[argc] = { itemArray };
+		Local<Value> argv[argc] = { itemsResult };
 		
 		callback->Call(1, argv);
 	}));

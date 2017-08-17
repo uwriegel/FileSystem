@@ -11,7 +11,6 @@ uint64_t get_volume_size(const wstring& directory_on_drive);
 Item get_data(const WIN32_FIND_DATAW& find_data);
 template <typename O>
 void list_files(const wstring& directory, O iter);
-wstring get_directory_parent(const wstring& path);
 
 const vector<Drive_info> get_drives()
 {
@@ -46,17 +45,21 @@ const vector<Drive_info> get_drives()
 
 const vector<Item> list_files(const wstring& directory)
 {
-	auto path = get_full_path_name(directory);
-	if (path[path.length() - 1] == '\\')
-		path.resize(path.length() - 1);
-
 	vector<Item> result;
-	list_files(path, back_inserter(result));
+	list_files(directory, back_inserter(result));
 
 	sort(result.begin(), result.end(), [](const auto& lvalue, const auto& rvalue) {
 		return lvalue.is_directory > rvalue.is_directory;
 	});
 	return move(result);
+}
+
+wstring get_normalized_path(wstring directory)
+{
+	auto path = get_full_path_name(directory);
+	if (path[path.length() - 1] == '\\')
+		path.resize(path.length() - 1);
+	return move(path);
 }
 
 wstring get_full_path_name(const wstring& path)
@@ -132,7 +135,8 @@ void list_files(const wstring& directory, O iter)
 		true,
 		get_directory_parent(directory)
 	};
-	*iter++ = move(get_data(find_data));
+	if (showHidden || !((find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN))
+		*iter++ = move(get_data(find_data));
 
 	while (true)
 	{
@@ -141,7 +145,8 @@ void list_files(const wstring& directory, O iter)
 			FindClose(handle);
 			break;
 		}
-		*iter++ = move(get_data(find_data));
+		if (showHidden || !((find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN))
+			*iter++ = move(get_data(find_data));
 	}
 }
 
@@ -169,3 +174,5 @@ wstring get_directory_parent(const wstring& path)
 	result.resize(pos);
 	return result;
 }
+
+bool showHidden{ false };
