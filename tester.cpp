@@ -2,10 +2,18 @@
 #include <iostream>
 #include "filesystem.h"
 #include "tools.h"
+#include "web_server.h"
 using namespace std;
 
 int main()
 {
+	Web_server web_server;
+	web_server.start();
+	wcout << L"Web server running" << endl;
+	string line; 
+	getline(cin, line);
+	web_server.stop();
+
 	SYSTEMTIME st;
 	GetSystemTime(&st);
 	FILETIME ft;
@@ -21,7 +29,7 @@ int main()
 	for (auto it = files.cbegin(); it < files.cend(); it++)
 		wcout << it->name << L" - " << it->is_directory << L" - " << it->date_time << L" - " << it->size << endl;
 
-	string line;
+	
 	getline(cin, line);
 	wcout << L"Hällo Welt" << endl;
 }
