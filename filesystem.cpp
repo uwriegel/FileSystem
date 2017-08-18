@@ -8,9 +8,12 @@ const wstring get_drive_description(const wstring& name);
 Drive_type get_drive_type(unsigned int type);
 bool is_mounted(const file_handle& volume);
 uint64_t get_volume_size(const wstring& directory_on_drive);
-Item get_data(const WIN32_FIND_DATAW& find_data);
+void get_data(const WIN32_FIND_DATAW& find_data, back_insert_iterator<vector<Item>>& it);
 template <typename O>
 void list_files(const wstring& directory, O iter);
+wstring get_directory_parent(const wstring& path);
+bool hasEnding(wstring const &fullString, wstring const &ending);
+wstring get_url(const wstring& filename);
 
 const vector<Drive_info> get_drives()
 {
@@ -67,6 +70,17 @@ wstring get_full_path_name(const wstring& path)
 	array<wchar_t, 1000> buffer;
 	auto size = GetFullPathNameW(path.c_str(), static_cast<DWORD>(buffer.size()), buffer.data(), nullptr);
 	return move(wstring(buffer.data(), size));
+}
+
+wstring get_url(const wstring& filename)
+{
+	if (!hasEnding(filename, L".exe"s))
+	{
+		auto pos = filename.rfind('.');
+		if (pos != string::npos)
+			return L"http://localhost:20000/Commander/Icon?file="s + filename.substr(pos);
+	}
+	return L"http://localhost:20000/Commander/Icon?file="s + filename;
 }
 
 const wstring get_drive_description(const wstring& name)
@@ -127,7 +141,7 @@ void list_files(const wstring& directory, O iter)
 
 	*iter++ = { 
 		L"images/parentfolder.png",
-		L"..",
+		L"",
 		static_cast<uint64_t>(-1L),
 		L"",
 		Item_kind::PARENT,
@@ -135,8 +149,7 @@ void list_files(const wstring& directory, O iter)
 		true,
 		get_directory_parent(directory)
 	};
-	if (showHidden || !((find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN))
-		*iter++ = move(get_data(find_data));
+	get_data(find_data, iter);
 
 	while (true)
 	{
@@ -145,34 +158,51 @@ void list_files(const wstring& directory, O iter)
 			FindClose(handle);
 			break;
 		}
-		if (showHidden || !((find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN))
-			*iter++ = move(get_data(find_data));
+		get_data(find_data, iter);
 	}
 }
 
-Item get_data(const WIN32_FIND_DATAW& find_data)
+void get_data(const WIN32_FIND_DATAW& find_data, back_insert_iterator<vector<Item>>& it)
 {
+	if (!showHidden && ((find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN))
+		return;
+	wstring filename{ find_data.cFileName };
+	if (filename == L"." || filename == L"..")
+		return;
+
 	auto is_directory = (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
-	return Item{ 
-		is_directory ? L"images/Folder.png" : L"",
-		find_data.cFileName, 
+	*it++ = move(Item{
+		is_directory ? L"images/Folder.png" : move(get_url(filename)),
+		move(filename),
 		static_cast<uint64_t>((find_data.nFileSizeHigh * (MAXDWORD + 1)) + find_data.nFileSizeLow),
 		format_time(find_data.ftLastWriteTime),
 		is_directory ? Item_kind::DIRECTORY : Item_kind::FILE,
 		(find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN,
 		is_directory,
 		L""
-	};
+	});
 }
 
 wstring get_directory_parent(const wstring& path)
 {
+	if (path.length() == 2)
+		return L"drives";
 	auto pos = path.rfind('\\');
 	if (pos == wstring::npos)
 		pos = 0;
 	auto result(path);
 	result.resize(pos);
+	if (result.length() == 2)
+		result.append(L"\\");
 	return result;
+}
+
+bool hasEnding(wstring const &fullString, wstring const &ending) 
+{
+	if (fullString.length() >= ending.length()) 
+		return (fullString.compare(fullString.length() - ending.length(), ending.length(), ending) == 0);
+	else 
+		return false;
 }
 
 bool showHidden{ false };

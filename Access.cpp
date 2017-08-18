@@ -129,6 +129,8 @@ void Access::list_files(const Nan::FunctionCallbackInfo<Value>& args)
 		}
 
 		wstring current_directory{ move(directory) };
+		if (current_directory.length() == 2)
+			current_directory.append(L"\\");
 		Local<Object> itemsResult = Nan::New<Object>();
 		itemsResult->Set(Nan::New("currentDirectory").ToLocalChecked(), 
 			Nan::New(reinterpret_cast<const uint16_t*>(current_directory.c_str()), static_cast<int>(current_directory.length())).ToLocalChecked());

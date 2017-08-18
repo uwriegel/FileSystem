@@ -48,5 +48,4 @@ extern const vector<Drive_info> get_drives();
 extern const vector<Item> list_files(const wstring& directory);
 extern wstring get_full_path_name(const wstring& path);
 extern wstring get_normalized_path(wstring directory);
-extern wstring get_directory_parent(const wstring& path);
 extern bool showHidden;
