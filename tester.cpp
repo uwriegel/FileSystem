@@ -1,12 +1,22 @@
 #include <windows.h>
 #include <iostream>
+#include <fstream>
 #include "filesystem.h"
 #include "tools.h"
 #include "web_server.h"
+#include "icon_extractor.h"
 using namespace std;
 
 int main()
 {
+	gdiplus_initialize();
+	auto bytes = extract_icon(L".css"); 
+	ofstream outfile(LR"(c:\users\urieg\desktop\schwein.png)", ofstream::binary);
+	outfile.write(bytes.data(), bytes.size());
+	outfile.flush();
+	outfile.close();
+	gdiplus_uninitialize();
+
 	Web_server web_server;
 	web_server.start();
 	wcout << L"Web server running" << endl;

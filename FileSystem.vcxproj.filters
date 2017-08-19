@@ -26,6 +26,12 @@
     <ClCompile Include="web_server_session.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="icon_extractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="memory_stream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="filesystem.h">
@@ -38,6 +44,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="web_server_session.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="icon_extractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="memory_stream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
