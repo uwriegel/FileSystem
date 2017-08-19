@@ -151,11 +151,13 @@
     <ClCompile Include="tester.cpp" />
     <ClCompile Include="tools.cpp" />
     <ClCompile Include="web_server.cpp" />
+    <ClCompile Include="web_server_session.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="tools.h" />
     <ClInclude Include="web_server.h" />
+    <ClInclude Include="web_server_session.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Readme.txt" />

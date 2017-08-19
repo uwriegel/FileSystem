@@ -1,6 +1,8 @@
 #define _WIN32_WINNT 0x0600
 #include <winsock2.h>
+#include <array>
 #include "web_server.h"
+#include "web_server_session.h"
 using namespace std;
 
 void Web_server::start()
@@ -37,13 +39,15 @@ void Web_server::run_listener()
 	int remote_len = sizeof(sockaddr_remote);
 	while (true)
 	{
-		auto accept_socket = WSAAccept(listen_socket, reinterpret_cast<SOCKADDR*>(&sockaddr_remote), &remote_len, nullptr, reinterpret_cast<DWORD_PTR>(nullptr));
-		if (accept_socket == reinterpret_cast<SOCKET>(INVALID_HANDLE_VALUE))
+		auto socket = reinterpret_cast<HANDLE>(WSAAccept(listen_socket, reinterpret_cast<SOCKADDR*>(&sockaddr_remote), &remote_len, 
+			nullptr, reinterpret_cast<DWORD_PTR>(nullptr)));
+		if (socket == INVALID_HANDLE_VALUE)
 		{
 			auto err = WSAGetLastError();
 			if (err == WSAEINTR)
 				break;
 		}
+		(new Session(socket))->read();
 	}
 }
 
