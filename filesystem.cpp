@@ -78,9 +78,9 @@ wstring get_url(const wstring& filename)
 	{
 		auto pos = filename.rfind('.');
 		if (pos != string::npos)
-			return L"http://localhost:20000/Commander/Icon?file="s + filename.substr(pos);
+			return L"http://localhost:20002/Icon?file="s + filename.substr(pos);
 	}
-	return L"http://localhost:20000/Commander/Icon?file="s + filename;
+	return L"http://localhost:20002/Icon?file="s + filename;
 }
 
 const wstring get_drive_description(const wstring& name)
