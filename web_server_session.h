@@ -16,6 +16,7 @@ private:
 	void on_read(int bytes_read);
 	void on_written(int bytes_read);
 	void write();
+	void send_image(const vector<char>& bytes);
 	void send_not_found();
 
 	HANDLE socket;

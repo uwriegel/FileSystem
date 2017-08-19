@@ -28,7 +28,8 @@ void gdiplus_initialize()
 	gdiplus_token;
 	auto status = GdiplusStartup(&gdiplus_token, &gdiplus_startup_input, nullptr);
 
-	png_clsid = get_encoder_clsid(L"image/png"s);
+	if (png_clsid.Data1 == 0)
+		png_clsid = get_encoder_clsid(L"image/png"s);
 }
 
 void gdiplus_uninitialize()
@@ -36,10 +37,10 @@ void gdiplus_uninitialize()
 	GdiplusShutdown(gdiplus_token);
 }
 
-const vector<char> extract_icon(const wstring& icon_path)
+const vector<char> extract_icon(const string& icon_path)
 {
-	SHFILEINFOW file_info{ 0 };
-	SHGetFileInfoW(icon_path.c_str(), FILE_ATTRIBUTE_NORMAL, &file_info, sizeof(file_info),
+	SHFILEINFOA file_info{ 0 };
+	SHGetFileInfo(icon_path.c_str(), FILE_ATTRIBUTE_NORMAL, &file_info, sizeof(file_info),
 		SHGFI_ICON | SHGFI_SMALLICON | SHGFI_USEFILEATTRIBUTES | SHGFI_TYPENAME);
 	auto icon = file_info.hIcon;
 	auto result = create_alpha_channel_bitmap_from_icon(icon);

@@ -10,7 +10,7 @@ using namespace std;
 int main()
 {
 	gdiplus_initialize();
-	auto bytes = extract_icon(L".css"); 
+	auto bytes = extract_icon(".docx"); 
 	ofstream outfile(LR"(c:\users\urieg\desktop\schwein.png)", ofstream::binary);
 	outfile.write(bytes.data(), bytes.size());
 	outfile.flush();

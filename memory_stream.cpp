@@ -1,4 +1,6 @@
+#include <iterator>
 #include "memory_stream.h"
+using namespace std;
 
 const vector<char> Memory_stream::get_bytes()
 {

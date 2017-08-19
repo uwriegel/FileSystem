@@ -13,7 +13,7 @@ template <typename O>
 void list_files(const wstring& directory, O iter);
 wstring get_directory_parent(const wstring& path);
 bool hasEnding(wstring const &fullString, wstring const &ending);
-wstring get_url(const wstring& filename);
+wstring get_url(const wstring& path, const wstring& filename);
 
 const vector<Drive_info> get_drives()
 {
@@ -72,7 +72,7 @@ wstring get_full_path_name(const wstring& path)
 	return move(wstring(buffer.data(), size));
 }
 
-wstring get_url(const wstring& filename)
+wstring get_url(const wstring& path, const wstring& filename)
 {
 	if (!hasEnding(filename, L".exe"s))
 	{
@@ -80,7 +80,7 @@ wstring get_url(const wstring& filename)
 		if (pos != string::npos)
 			return L"http://localhost:20002/Icon?file="s + filename.substr(pos);
 	}
-	return L"http://localhost:20002/Icon?file="s + filename;
+	return L"http://localhost:20002/Icon?file="s + path + L"\\"s + filename;
 }
 
 const wstring get_drive_description(const wstring& name)
@@ -149,7 +149,7 @@ void list_files(const wstring& directory, O iter)
 		true,
 		get_directory_parent(directory)
 	};
-	get_data(find_data, iter);
+	get_data(directory, find_data, iter);
 
 	while (true)
 	{
@@ -158,11 +158,11 @@ void list_files(const wstring& directory, O iter)
 			FindClose(handle);
 			break;
 		}
-		get_data(find_data, iter);
+		get_data(directory, find_data, iter);
 	}
 }
 
-void get_data(const WIN32_FIND_DATAW& find_data, back_insert_iterator<vector<Item>>& it)
+void get_data(const wstring& directory, const WIN32_FIND_DATAW& find_data, back_insert_iterator<vector<Item>>& it)
 {
 	if (!showHidden && ((find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN))
 		return;
@@ -172,7 +172,7 @@ void get_data(const WIN32_FIND_DATAW& find_data, back_insert_iterator<vector<Ite
 
 	auto is_directory = (find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY;
 	*it++ = move(Item{
-		is_directory ? L"images/Folder.png" : move(get_url(filename)),
+		is_directory ? L"images/Folder.png" : move(get_url(directory, filename)),
 		move(filename),
 		static_cast<uint64_t>((find_data.nFileSizeHigh * (MAXDWORD + 1)) + find_data.nFileSizeLow),
 		format_time(find_data.ftLastWriteTime),
