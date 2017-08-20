@@ -4,15 +4,11 @@
 
 Session::Session(HANDLE socket)
 	: OVERLAPPED{ 0 }
-	, socket(socket) 
-{
-	gdiplus_initialize();
-}
+	, socket(socket) {}
 
 Session::~Session()
 {
 	closesocket(reinterpret_cast<SOCKET>(socket));
-	gdiplus_uninitialize();
 }
 
 void Session::read()
@@ -41,8 +37,11 @@ void Session::on_read(int bytes_read)
 		smatch matches;
 		if (regex_search(firstline, matches, extract_file))
 		{
+			gdiplus_initialize();
 			auto file = matches[1].str();
 			auto bytes = extract_icon(file);
+			gdiplus_uninitialize();
+
 			send_image(bytes);
 		}
 		else
@@ -66,11 +65,10 @@ void Session::on_written(int bytes_written)
 
 void Session::write()
 {
-	if (!WriteFileEx(socket, http_response.data() + written, static_cast<DWORD>(http_response.size() - written), this,
+	WriteFileEx(socket, http_response.data() + written, static_cast<DWORD>(http_response.size() - written), this,
 		[](DWORD error_code, DWORD written, OVERLAPPED *session) {
 		reinterpret_cast<Session*>(session)->on_written(written);
-	}))
-		delete this;
+	});
 }
 
 void Session::send_image(const vector<char>& bytes)
