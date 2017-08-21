@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="exif_reader.cpp" />
     <ClCompile Include="filesystem.cpp" />
     <ClCompile Include="icon_extractor.cpp" />
     <ClCompile Include="memory_stream.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="web_server_session.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="exif_reader.h" />
     <ClInclude Include="filesystem.h" />
     <ClInclude Include="icon_extractor.h" />
     <ClInclude Include="memory_stream.h" />

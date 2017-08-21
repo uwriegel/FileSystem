@@ -5,10 +5,20 @@
 #include "tools.h"
 #include "web_server.h"
 #include "icon_extractor.h"
+#include "exif_reader.h"
 using namespace std;
 
 int main()
 {
+	Exif_reader er(LR"(A:\Bilder\2015\Canon\IMG_8420.JPG)");
+	auto ret = er.initialize();
+
+	Exif_reader er2(LR"(A:\Maps\Netherlands_cycle.map.xml)");
+	ret = er2.initialize();
+
+	Exif_reader er3(LR"(A:\Maps\nix.map.xml)");
+	ret = er3.initialize();
+
 	gdiplus_initialize();
 	auto bytes = extract_icon(".docx"); 
 	ofstream outfile(LR"(c:\users\urieg\desktop\schwein.png)", ofstream::binary);
