@@ -3,13 +3,15 @@
 #include <vector>
 using namespace std;
 
-enum class Drive_type
+enum class Root_item_type
 {
 	UNKNOWN,
 	HARDDRIVE,
 	ROM,
 	REMOVABLE,
-	NETWORK
+	NETWORK,
+	REGISTRY,
+	SERVICES
 };
 
 enum class Item_kind
@@ -28,7 +30,7 @@ struct Root_item
 	wstring name;
 	wstring description;
 	uint64_t size;
-	Drive_type type;
+	Root_item_type type;
 	bool isMounted;
 };
 

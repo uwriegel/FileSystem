@@ -5,7 +5,7 @@
 using namespace std;
 
 const wstring get_drive_description(const wstring& name);
-Drive_type get_drive_type(unsigned int type);
+Root_item_type get_drive_type(unsigned int type);
 bool is_mounted(const file_handle& volume);
 uint64_t get_volume_size(const wstring& directory_on_drive);
 void get_data(const WIN32_FIND_DATAW& find_data, back_insert_iterator<vector<Item>>& it);
@@ -42,6 +42,23 @@ const vector<Root_item> get_root_items()
 		return !val.isMounted;
 	});
 	drive_infos.erase(erase_it, drive_infos.end());
+
+	drive_infos.push_back(move(Root_item
+	{
+		L"Registry"s,
+		L"Windows Registrierungsdatenbank"s,
+		0,
+		Root_item_type::REGISTRY,
+		true
+	}));
+	drive_infos.push_back(move(Root_item
+	{
+		L"Dienste"s,
+		L"Dienstesteuerung"s,
+		0,
+		Root_item_type::SERVICES,
+		true
+	}));
 
 	return move(drive_infos);
 }
@@ -99,20 +116,20 @@ uint64_t get_volume_size(const wstring& directory_on_drive)
 	return result.QuadPart;
 }
 
-Drive_type get_drive_type(unsigned int type)
+Root_item_type get_drive_type(unsigned int type)
 {
 	switch (type)
 	{
 		case 2:
-			return Drive_type::REMOVABLE;
+			return Root_item_type::REMOVABLE;
 		case 3:
-			return Drive_type::HARDDRIVE;
+			return Root_item_type::HARDDRIVE;
 		case 4:
-			return Drive_type::NETWORK;
+			return Root_item_type::NETWORK;
 		case 5:
-			return Drive_type::ROM;
+			return Root_item_type::ROM;
 		default:
-			return Drive_type::UNKNOWN;
+			return Root_item_type::UNKNOWN;
 	}
 }
 
