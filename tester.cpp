@@ -40,7 +40,7 @@ int main()
 	SystemTimeToFileTime(&st, &ft);
 	wcout << format_time(ft) << endl;
 	
-	auto drives = get_drives();
+	auto drives = get_root_items();
 	for (auto it = drives.begin(); it < drives.end(); it++)
 		wcout << it->name << L" - " << static_cast<int>(it->type) << L" - " << it->description << L" - " << it->size << endl;
 

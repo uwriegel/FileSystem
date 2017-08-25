@@ -15,20 +15,20 @@ wstring get_directory_parent(const wstring& path);
 bool hasEnding(wstring const &fullString, wstring const &ending);
 wstring get_url(const wstring& path, const wstring& filename);
 
-const vector<Drive_info> get_drives()
+const vector<Root_item> get_root_items()
 {
 	array<wchar_t, 500> buffer;
 	auto size = GetLogicalDriveStringsW(static_cast<DWORD>(buffer.size()), buffer.data());
 	wstring drive_string(buffer.data(), size);
 	auto drives = split(drive_string, 0);
 
-	vector<Drive_info> drive_infos;
+	vector<Root_item> drive_infos;
 	transform(drives.begin(), drives.end(), back_inserter(drive_infos), [](const wstring& val) {
 		auto type = GetDriveTypeW(val.c_str());
 		auto volume = wstring{ L"\\\\.\\" + val.substr(0, 2) };
 		file_handle volume_handle(CreateFileW(volume.c_str(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
 			nullptr, OPEN_EXISTING, 0, nullptr));
-		return move(Drive_info
+		return move(Root_item
 		{
 			val,
 			move(get_drive_description(val)),
@@ -38,7 +38,7 @@ const vector<Drive_info> get_drives()
 		});
 	});
 
-	auto erase_it = remove_if(drive_infos.begin(), drive_infos.end(), [](const Drive_info& val) {
+	auto erase_it = remove_if(drive_infos.begin(), drive_infos.end(), [](const Root_item& val) {
 		return !val.isMounted;
 	});
 	drive_infos.erase(erase_it, drive_infos.end());
@@ -186,7 +186,7 @@ void get_data(const wstring& directory, const WIN32_FIND_DATAW& find_data, back_
 wstring get_directory_parent(const wstring& path)
 {
 	if (path.length() == 2)
-		return L"drives";
+		return L"root";
 	auto pos = path.rfind('\\');
 	if (pos == wstring::npos)
 		pos = 0;

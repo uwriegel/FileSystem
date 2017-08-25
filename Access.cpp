@@ -26,7 +26,7 @@ void Access::Init(Local<Object> exports)
 	tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
 	// Prototype
-	SetPrototypeMethod(tpl, "getDrives", get_drives);
+	SetPrototypeMethod(tpl, "getRootItems", get_root_items);
 	SetPrototypeMethod(tpl, "listFiles", list_files);
 
 	constructor.Reset(tpl->GetFunction());
@@ -59,15 +59,15 @@ void Access::New(const Nan::FunctionCallbackInfo<Value>& info)
 //		static_cast<int>(obj->value.length())).ToLocalChecked());
 //}
 
-void Access::get_drives(const Nan::FunctionCallbackInfo<Value>& args)
+void Access::get_root_items(const Nan::FunctionCallbackInfo<Value>& args)
 {
 	if (args[0]->IsUndefined())
 		return;
 	auto callback = new Callback(args[0].As<Function>());
-	auto drives = make_shared<vector<Drive_info>>();
+	auto drives = make_shared<vector<Root_item>>();
 	AsyncQueueWorker(new Worker(callback, [drives]()-> void
 	{
-		*drives = move(::get_drives());
+		*drives = move(::get_root_items());
 	}, [drives](Nan::Callback* callback)-> void
 	{
 		auto driveArray = Nan::New<Array>();

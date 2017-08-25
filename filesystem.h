@@ -23,7 +23,7 @@ enum class Item_kind
 	REGISTRY_PROPERTY
 };
 
-struct Drive_info
+struct Root_item
 {
 	wstring name;
 	wstring description;
@@ -44,7 +44,7 @@ struct Item
 	wstring parent;
 };
 
-extern const vector<Drive_info> get_drives();
+extern const vector<Root_item> get_root_items();
 extern const vector<Item> list_files(const wstring& directory);
 extern wstring get_full_path_name(const wstring& path);
 extern wstring get_normalized_path(wstring directory);
